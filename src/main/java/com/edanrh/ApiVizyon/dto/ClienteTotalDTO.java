@@ -1,0 +1,9 @@
+package com.edanrh.ApiVizyon.dto;
+
+import lombok.Data;
+
+@Data
+public class ClienteTotalDTO {
+    private String cliente;
+    private double totalCompras;
+}
