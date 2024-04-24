@@ -13,7 +13,7 @@ public interface VentaRepository extends CrudRepository<Venta, Long> {
     List<Venta> findByDates(String mes, String year);
 
     @Query("SELECT COUNT(v.empleado.id) FROM Venta v GROUP BY v.empleado.id HAVING v.empleado.id = ?1")
-    int countByEmpleadoId(Long id);
+    Integer countByEmpleadoId(Long id);
 
     List<Venta> findAllByFecha(Date fecha);
 }

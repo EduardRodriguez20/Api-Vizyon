@@ -163,7 +163,10 @@ public class QueryServiceImpl implements QueryService {
         }else {
             List<EmpleadoVentasDTO> dtoList = new ArrayList<>();
             for (Empleado e : list){
-                int ventas = ventaRepository.countByEmpleadoId(e.getId());
+                Integer ventas = ventaRepository.countByEmpleadoId(e.getId());
+                if (ventas == null){
+                    ventas = 0;
+                }
                 EmpleadoVentasDTO eDTO = empleadoDTOConvert.toVentasDTO(e, ventas);
                 dtoList.add(eDTO);
             }
