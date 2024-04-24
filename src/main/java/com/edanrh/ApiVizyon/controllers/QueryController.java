@@ -151,4 +151,140 @@ public class QueryController {
         response.put("Ventas", list);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/query17")
+    public ResponseEntity<?> query17() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<PrendaUsdDTO> list = queryService.query17();
+        response.put("Prendas", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query18")
+    public ResponseEntity<?> query18() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<ClienteDTO> list = queryService.query18();
+        response.put("Clientes", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query19")
+    public ResponseEntity<?> query19() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<OrdenDTO> list = queryService.query19();
+        response.put("Ordenes", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query20")
+    public ResponseEntity<?> query20(@RequestParam double sueldoBase) throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<CargoDTO> list = queryService.query20(sueldoBase);
+        response.put("Cargos", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query21")
+    public ResponseEntity<?> query21() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<ClientePaisDTO> list = queryService.query21();
+        response.put("Clientes", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query22")
+    public ResponseEntity<?> query22() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<TipoProteccionDTO> list = queryService.query22();
+        response.put("Tipos de proteccion", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query23")
+    public ResponseEntity<?> query23() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<EmpleadoDTO> list = queryService.query23();
+        response.put("Empleados", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query24")
+    public ResponseEntity<?> query24() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<CargoCantidadDTO> list = queryService.query24();
+        response.put("Cargos", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query25")
+    public ResponseEntity<?> query25() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<EstadoPrendaDTO> list = queryService.query25();
+        response.put("Estados de prendas", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query26")
+    public ResponseEntity<?> query26() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<TipoPersonaDTO> list = queryService.query26();
+        response.put("Tipos persona", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query27")
+    public ResponseEntity<?> query27() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<TipoProteccionDTO> list = queryService.query27();
+        response.put("Tipos proteccion", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query28")
+    public ResponseEntity<?> query28() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<EstadoOrdenDTO> list = queryService.query28();
+        response.put("Estados ordenes", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query29")
+    public ResponseEntity<?> query29() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<FormaPagoDTO> list = queryService.query29();
+        response.put("Formas de pago", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query30")
+    public ResponseEntity<?> query30() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<InsumoPrendasDTO> list = queryService.query30();
+        response.put("Tipo Insumos", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query31")
+    public ResponseEntity<?> query31() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<ClienteTotalDTO> list = queryService.query31();
+        response.put("Total compras cliente", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query32")
+    public ResponseEntity<?> query32() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<PrendaTotalCopDTO> list = queryService.query32();
+        response.put("Total Prendas", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/query33")
+    public ResponseEntity<?> query33() throws NotFoundException {
+        Map<String,Object> response=new HashMap<>();
+        List<EstadoPrendaDTO> list = queryService.query33();
+        response.put("Estado de prendas", list);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

@@ -11,10 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -621,7 +618,20 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
-    public List<EstadoPrendaDTO> query33() {
-        return List.of();
+    public List<EstadoPrendaDTO> query33() throws NotFoundException {
+        List<Estado> list = (List<Estado>) estadoRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay estados registrados", HttpStatus.NO_CONTENT);
+        }else {
+            List<EstadoPrendaDTO> dtoList = new ArrayList<>();
+            for (Estado e : list){
+                Integer cantidad = prendaRepository.countByEstadoId(e.getId());
+                if (cantidad == null) cantidad = 0;
+                EstadoPrendaDTO eDTO = estadoDTOConvert.toPrendaDTO(e, cantidad);
+                dtoList.add(eDTO);
+            }
+            dtoList.sort(Comparator.comparingInt(EstadoPrendaDTO::getCantidadPrendas).reversed());
+            return dtoList;
+        }
     }
 }

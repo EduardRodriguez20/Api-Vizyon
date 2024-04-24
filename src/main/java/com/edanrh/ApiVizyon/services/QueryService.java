@@ -40,5 +40,5 @@ public interface QueryService {
     List<InsumoPrendasDTO> query30() throws NotFoundException;
     List<ClienteTotalDTO> query31() throws NotFoundException;
     List<PrendaTotalCopDTO> query32() throws NotFoundException;
-    List<EstadoPrendaDTO> query33();
+    List<EstadoPrendaDTO> query33() throws NotFoundException;
 }
