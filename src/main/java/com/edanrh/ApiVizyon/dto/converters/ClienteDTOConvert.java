@@ -27,9 +27,10 @@ public class ClienteDTOConvert {
         return dto;
     }
 
-    public ClienteTotalDTO toTotalDTO(Cliente entity, double total) {
+    public ClienteTotalDTO toTotalDTO(Cliente entity, double totalCop, double totalUsd) {
         ClienteTotalDTO dto = modelMapper.map(entity, ClienteTotalDTO.class);
-        dto.setTotalCompras(total);
+        dto.setTotalComprasCOP(totalCop);
+        dto.setTotalComprasUSD(totalUsd);
         return dto;
     }
 }

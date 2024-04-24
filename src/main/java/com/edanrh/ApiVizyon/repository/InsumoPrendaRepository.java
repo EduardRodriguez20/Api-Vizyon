@@ -11,4 +11,7 @@ public interface InsumoPrendaRepository extends CrudRepository<InsumoPrenda, Lon
 
     @Query("SELECT ip FROM InsumoPrenda ip WHERE ip.prenda.id = ?1")
     List<InsumoPrenda> findAllByPrendaId(Long id);
+
+    @Query("SELECT COUNT(i.insumo.id) FROM InsumoPrenda i GROUP BY i.insumo.id HAVING i.insumo.id = ?1")
+    Integer countByInsumoId(Long id);
 }

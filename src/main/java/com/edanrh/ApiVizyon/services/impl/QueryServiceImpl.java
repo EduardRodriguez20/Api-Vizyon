@@ -27,6 +27,7 @@ public class QueryServiceImpl implements QueryService {
     private EmpleadoRepository empleadoRepository;
     private EmpresaRepository empresaRepository;
     private EstadoRepository estadoRepository;
+    private FormaPagoRepository formaPagoRepository;
     private InsumoRepository insumoRepository;
     private InsumoPrendaRepository insumoPrendaRepository;
     private InsumoProveedorRepository ipRepository;
@@ -45,6 +46,7 @@ public class QueryServiceImpl implements QueryService {
     private EmpleadoDTOConvert empleadoDTOConvert;
     private EmpresaDTOConvert empresaDTOConvert;
     private EstadoDTOConvert estadoDTOConvert;
+    private FormaPagoDTOConvert formaPagoDTOConvert;
     private InventarioDTOConvert inventarioDTOConvert;
     private VentaDTOConvert ventaDTOConvert;
     private OrdenDTOConvert ordenDTOConvert;
@@ -543,23 +545,79 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
-    public List<FormaPagoDTO> query29() {
-        return List.of();
+    public List<FormaPagoDTO> query29() throws NotFoundException {
+        List<FormaPago> list = (List<FormaPago>) formaPagoRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay formas de pago registrados", HttpStatus.NO_CONTENT);
+        }else {
+            List<FormaPagoDTO> dtoList = new ArrayList<>();
+            for (FormaPago fp : list){
+                Integer cantidad = ventaRepository.countByFormaPagoId(fp.getId());
+                if (cantidad == null) cantidad = 0;
+                FormaPagoDTO fpDTO = formaPagoDTOConvert.toDTO(fp, cantidad);
+                dtoList.add(fpDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override
-    public List<InsumoPrendasDTO> query30() {
-        return List.of();
+    public List<InsumoPrendasDTO> query30() throws NotFoundException {
+        List<Insumo> list = (List<Insumo>) insumoRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay insumos registrados", HttpStatus.NO_CONTENT);
+        }else {
+            List<InsumoPrendasDTO> dtoList = new ArrayList<>();
+            for (Insumo i : list){
+                Integer cantidad = insumoPrendaRepository.countByInsumoId(i.getId());
+                if (cantidad == null) cantidad = 0;
+                InsumoPrendasDTO iDTO = insumoDTOConvert.toPrendasDTO(i, cantidad);
+                dtoList.add(iDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override
-    public List<ClienteTotalDTO> query31() {
-        return List.of();
+    public List<ClienteTotalDTO> query31() throws NotFoundException {
+        List<Cliente> list = (List<Cliente>) clienteRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay clientes registrados", HttpStatus.NO_CONTENT);
+        }else {
+            List<ClienteTotalDTO> dtoList = new ArrayList<>();
+            for (Cliente c : list){
+                List<Venta> ventas = ventaRepository.findAllByClienteId(c.getId());
+                double totalCOP = 0;
+                double totalUSD = 0;
+                for (Venta v : ventas){
+                    List<DetalleVenta> detalleVentas = detalleVentaRepository.findAllByVentaId(v.getId());
+                    for (DetalleVenta dv : detalleVentas){
+                        totalCOP = totalCOP + (dv.getCantidad() * dv.getProducto().getValorVtaCop());
+                        totalUSD = totalUSD + (dv.getCantidad() * dv.getProducto().getValorVtaUsd());
+                    }
+                }
+                ClienteTotalDTO cDTO = clienteDTOConvert.toTotalDTO(c, totalCOP, totalUSD);
+                dtoList.add(cDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override
-    public List<PrendaCopDTO> query32() {
-        return List.of();
+    public List<PrendaTotalCopDTO> query32() throws NotFoundException {
+        List<Prenda> list = (List<Prenda>) prendaRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay prendas registrados", HttpStatus.NO_CONTENT);
+        }else {
+            List<PrendaTotalCopDTO> dtoList = new ArrayList<>();
+            for (Prenda p : list){
+                Integer cantidad = detalleVentaRepository.findSumByProductoId(p.getId());
+                double total = cantidad * p.getValorUnitCop();
+                PrendaTotalCopDTO pDTO = prendaDTOConvert.toTotalCopDTO(p, total);
+                dtoList.add(pDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override

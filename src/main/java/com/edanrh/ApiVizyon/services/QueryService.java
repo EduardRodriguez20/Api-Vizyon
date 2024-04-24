@@ -36,9 +36,9 @@ public interface QueryService {
     List<TipoPersonaDTO> query26() throws NotFoundException;
     List<TipoProteccionDTO> query27() throws NotFoundException;
     List<EstadoOrdenDTO> query28() throws NotFoundException;
-    List<FormaPagoDTO> query29();
-    List<InsumoPrendasDTO> query30();
-    List<ClienteTotalDTO> query31();
-    List<PrendaCopDTO> query32();
+    List<FormaPagoDTO> query29() throws NotFoundException;
+    List<InsumoPrendasDTO> query30() throws NotFoundException;
+    List<ClienteTotalDTO> query31() throws NotFoundException;
+    List<PrendaTotalCopDTO> query32() throws NotFoundException;
     List<EstadoPrendaDTO> query33();
 }

@@ -18,6 +18,12 @@ public interface VentaRepository extends CrudRepository<Venta, Long> {
     @Query("SELECT COUNT(v.cliente.id) FROM Venta v GROUP BY v.cliente.id HAVING v.cliente.id = ?1")
     Integer countByClienteId(Long id);
 
+    @Query("SELECT COUNT(v.formaPago.id) FROM Venta v GROUP BY v.formaPago.id HAVING v.formaPago.id = ?1")
+    Integer countByFormaPagoId(Long id);
+
+    @Query("SELECT v FROM Venta v WHERE v.cliente.id = ?1")
+    List<Venta> findAllByClienteId(Long id);
+
     @Query("SELECT v FROM Venta v WHERE v.fecha BETWEEN ?1 AND ?2")
     List<Venta> findAllBetweenDates(Date fecha1, Date fecha2);
 
