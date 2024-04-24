@@ -13,4 +13,8 @@ public class OrdenDTO {
     private String cliente;
     private String estado;
     private List<DetalleOrdenDTO> items = new ArrayList<>();
+
+    public void addItem(DetalleOrdenDTO item){
+        items.add(item);
+    }
 }

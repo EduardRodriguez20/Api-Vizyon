@@ -13,7 +13,7 @@ public class EmpleadoDTO {
     private int añosEmpleado;
     private String municipio;
 
-    private void calculateAñosEmpleado(){
+    public void calculateAñosEmpleado(){
         Calendar c1 = Calendar.getInstance();
         c1.setTime(this.fechaIngreso);
         Calendar c2 = Calendar.getInstance();

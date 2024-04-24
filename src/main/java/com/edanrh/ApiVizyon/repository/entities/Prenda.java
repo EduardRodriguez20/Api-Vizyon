@@ -29,11 +29,5 @@ public class Prenda {
     @JoinColumn(name = "IdGeneroFk")
     private Genero genero;
     private String codigo;
-//    @ManyToMany
-//    @JoinTable(
-//            name = "insumo_prendas",
-//            joinColumns = @JoinColumn(name = "id_prenda"),
-//            inverseJoinColumns = @JoinColumn(name = "id_insumo")
-//    )
-//    private List<Insumo> insumos = new ArrayList<>();
+
 }

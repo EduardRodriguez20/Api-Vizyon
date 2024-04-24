@@ -11,4 +11,8 @@ public class ProveedorDTO {
     private String nombre;
     private String municipio;
     private List<InsumoDTO> insumos = new ArrayList<>();
+
+    public void addInsumos(InsumoDTO insumo) {
+        this.insumos.add(insumo);
+    }
 }

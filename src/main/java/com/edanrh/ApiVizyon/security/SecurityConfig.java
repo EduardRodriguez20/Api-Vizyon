@@ -34,7 +34,7 @@ public class SecurityConfig{
         http.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.authorizeHttpRequests(auth -> auth
                     .requestMatchers("/authenticate", "/users/register").permitAll()
-                    .requestMatchers("/users/**").authenticated()
+                    .requestMatchers("/users/**", "/query/**").authenticated()
                     .requestMatchers(SWAGGER_WHITELIST).permitAll()
                     .anyRequest().authenticated())
                 .addFilterAfter(jwtValidationFilter, UsernamePasswordAuthenticationFilter.class);

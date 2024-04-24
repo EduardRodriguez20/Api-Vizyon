@@ -6,6 +6,6 @@ import lombok.Data;
 public class DetalleVentaDTO {
     private String prenda;
     private String talla;
-    private String cantidad;
+    private int cantidad;
     private String valorUnit;
 }

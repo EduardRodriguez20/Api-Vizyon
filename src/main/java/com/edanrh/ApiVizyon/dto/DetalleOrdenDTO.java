@@ -10,7 +10,7 @@ public class DetalleOrdenDTO {
     private String cliente;
     private Date fecha;
     private String prenda;
-    private String cantidadProducir;
-    private String cantidadProducida;
+    private int cantidadProducir;
+    private int cantidadProducida;
     private String estado;
 }

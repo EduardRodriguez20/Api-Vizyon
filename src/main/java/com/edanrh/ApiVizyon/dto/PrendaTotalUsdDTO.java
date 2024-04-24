@@ -3,7 +3,7 @@ package com.edanrh.ApiVizyon.dto;
 import lombok.Data;
 
 @Data
-public class DetalleOrdenStockDTO {
+public class PrendaTotalUsdDTO {
     private String prenda;
-    private int cantidadProducida;
+    private double valorTotalUsd;
 }

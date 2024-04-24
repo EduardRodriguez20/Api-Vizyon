@@ -3,7 +3,7 @@ package com.edanrh.ApiVizyon.dto;
 import lombok.Data;
 
 @Data
-public class InsumoDTO {
+public class EmpleadoVentasDTO {
     private String nombre;
-    private double valorUnit;
+    private int ventas;
 }

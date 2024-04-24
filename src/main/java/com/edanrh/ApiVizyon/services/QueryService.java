@@ -1,27 +1,28 @@
 package com.edanrh.ApiVizyon.services;
 
 import com.edanrh.ApiVizyon.dto.*;
+import com.edanrh.ApiVizyon.exceptions.NotFoundException;
 
 import java.util.Date;
 import java.util.List;
 
 public interface QueryService {
-    List<VentaDTO> query1(String mes, String year);
-    List<EmpleadoDTO> query2();
-    List<VentaDTO> query3();
-    List<OrdenDTO> query4();
-    List<InventarioDTO> query5();
-    List<ProveedorDTO> query6();
-    List<VentaDTO> query7();
-    List<OrdenDTO> query8();
-    List<EmpresaDTO> query9();
-    List<DetalleOrdenStockDTO> query10();
-    List<VentaDTO> query11(Date fecha);
-    List<EmpleadoDTO> query12();
-    List<PrendaUsdDTO> query13();
-    List<PrendaInsumosDTO> query14();
-    List<EmpleadoDTO> query15();
-    List<VentaDTO> query16();
+    List<VentaDTO> query1(String mes, String year) throws NotFoundException;
+    List<EmpleadoDTO> query2() throws NotFoundException;
+    List<VentaDTO> query3() throws NotFoundException;
+    List<OrdenDTO> query4() throws NotFoundException;
+    List<InventarioDTO> query5() throws NotFoundException;
+    List<ProveedorDTO> query6() throws NotFoundException;
+    List<EmpleadoVentasDTO> query7() throws NotFoundException;
+    List<OrdenDTO> query8() throws NotFoundException;
+    List<EmpresaDTO> query9() throws NotFoundException;
+    List<DetalleOrdenStockDTO> query10() throws NotFoundException;
+    List<VentaDTO> query11(Date fecha) throws NotFoundException;
+    List<EmpleadoDTO> query12() throws NotFoundException;
+    List<PrendaTotalUsdDTO> query13() throws NotFoundException;
+    List<PrendaInsumosDTO> query14() throws NotFoundException;
+    List<EmpleadoDTO> query15() throws NotFoundException;
+    List<VentaDTO> query16(Date fecha1, Date fecha2) throws NotFoundException;
     List<PrendaUsdDTO> query17();
     List<ClienteDTO> query18();
     List<OrdenDTO> query19();

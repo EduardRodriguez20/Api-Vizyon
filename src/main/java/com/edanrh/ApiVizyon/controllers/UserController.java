@@ -47,7 +47,7 @@ public class UserController {
             response.put("user", user);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch (DataAccessException e){
-            response.put("message","Error inserting to database");
+            response.put("message","Error searching to database");
             response.put("error",e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -14,4 +14,8 @@ public class VentaDTO {
     private String idCliente;
     private String formaPago;
     private List<DetalleVentaDTO> items = new ArrayList<>();
+
+    public void addItem(DetalleVentaDTO item) {
+        this.items.add(item);
+    }
 }

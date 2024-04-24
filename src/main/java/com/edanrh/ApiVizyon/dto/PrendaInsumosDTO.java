@@ -8,4 +8,8 @@ import java.util.List;
 public class PrendaInsumosDTO {
     private String prenda;
     private List<InsumoCantidadDTO> insumos;
+
+    public void addInsumo(InsumoCantidadDTO insumo) {
+        this.insumos.add(insumo);
+    }
 }

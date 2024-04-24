@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class ClienteTotalDTO {
-    private String cliente;
+    private String nombre;
     private double totalCompras;
 }
