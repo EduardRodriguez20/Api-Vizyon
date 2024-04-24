@@ -12,6 +12,6 @@ public interface DetalleVentaRepository extends CrudRepository<DetalleVenta, Lon
     List<DetalleVenta> findAllByVentaId(Long id);
 
     @Query("SELECT SUM(dv.cantidad) FROM DetalleVenta dv WHERE dv.producto.id = ?1")
-    int countByProductoId(Long id);
+    Integer countByProductoId(Long id);
 
 }

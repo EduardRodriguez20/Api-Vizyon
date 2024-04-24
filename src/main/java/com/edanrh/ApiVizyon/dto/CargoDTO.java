@@ -6,5 +6,4 @@ import lombok.Data;
 public class CargoDTO {
     private String descripcion;
     private double sueldoBase;
-    private int cantidadEmpleados;
 }

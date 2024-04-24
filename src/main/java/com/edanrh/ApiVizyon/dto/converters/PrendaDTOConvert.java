@@ -2,6 +2,7 @@ package com.edanrh.ApiVizyon.dto.converters;
 
 import com.edanrh.ApiVizyon.dto.PrendaInsumosDTO;
 import com.edanrh.ApiVizyon.dto.PrendaTotalUsdDTO;
+import com.edanrh.ApiVizyon.dto.PrendaUsdDTO;
 import com.edanrh.ApiVizyon.repository.entities.Prenda;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,6 +24,13 @@ public class PrendaDTOConvert {
     public PrendaInsumosDTO toInsumosDTO(Prenda prenda){
         PrendaInsumosDTO dto = new PrendaInsumosDTO();
         dto.setPrenda(prenda.getNombre());
+        return dto;
+    }
+
+    public PrendaUsdDTO toUsdDTO(Prenda prenda){
+        PrendaUsdDTO dto = modelMapper.map(prenda, PrendaUsdDTO.class);
+        dto.setPrenda(prenda.getNombre());
+        dto.setEstado(prenda.getEstado().getDescripcion());
         return dto;
     }
 }

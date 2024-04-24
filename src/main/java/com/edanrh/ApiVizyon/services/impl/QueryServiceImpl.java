@@ -2,6 +2,7 @@ package com.edanrh.ApiVizyon.services.impl;
 
 import com.edanrh.ApiVizyon.dto.*;
 import com.edanrh.ApiVizyon.dto.converters.*;
+import com.edanrh.ApiVizyon.exceptions.BussinesRuleException;
 import com.edanrh.ApiVizyon.exceptions.NotFoundException;
 import com.edanrh.ApiVizyon.repository.*;
 import com.edanrh.ApiVizyon.repository.entities.*;
@@ -19,6 +20,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class QueryServiceImpl implements QueryService {
 
+    private CargoRepository cargoRepository;
+    private ClienteRepository clienteRepository;
     private DetalleVentaRepository detalleVentaRepository;
     private DetalleOrdenRepository detalleOrdenRepository;
     private EmpleadoRepository empleadoRepository;
@@ -34,6 +37,9 @@ public class QueryServiceImpl implements QueryService {
     private ProveedorRepository proveedorRepository;
     private DetalleVentaRepository dvRepository;
     private DetalleOrdenRepository doRepository;
+    private TipoProteccionRepository tProteccionRepository;
+    private CargoDTOConvert cargoDTOConvert;
+    private ClienteDTOConvert clienteDTOConvert;
     private EmpleadoDTOConvert empleadoDTOConvert;
     private EmpresaDTOConvert empresaDTOConvert;
     private InventarioDTOConvert inventarioDTOConvert;
@@ -164,9 +170,7 @@ public class QueryServiceImpl implements QueryService {
             List<EmpleadoVentasDTO> dtoList = new ArrayList<>();
             for (Empleado e : list){
                 Integer ventas = ventaRepository.countByEmpleadoId(e.getId());
-                if (ventas == null){
-                    ventas = 0;
-                }
+                if (ventas == null) ventas = 0;
                 EmpleadoVentasDTO eDTO = empleadoDTOConvert.toVentasDTO(e, ventas);
                 dtoList.add(eDTO);
             }
@@ -267,7 +271,8 @@ public class QueryServiceImpl implements QueryService {
             for (Prenda p : list){
                 Optional<Inventario> inventario = inventarioRepository.findFirstByPrendaId(p.getId());
                 if (inventario.isPresent()){
-                    int cantidad = detalleVentaRepository.countByProductoId(inventario.get().getId());
+                    Integer cantidad = detalleVentaRepository.countByProductoId(inventario.get().getId());
+                    if (cantidad == null) cantidad = 0;
                     PrendaTotalUsdDTO pDTO = prendaDTOConvert.toTotalDTO(p, (cantidad * p.getValorUnitUsd()));
                     dtoList.add(pDTO);
                 }else {
@@ -313,38 +318,118 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
-    public List<VentaDTO> query16(Date fecha1, Date fecha2) throws NotFoundException{
-        return List.of();
+    public List<VentaDTO> query16(Date fecha1, Date fecha2) throws NotFoundException, BussinesRuleException {
+        if (fecha1.getTime() < fecha2.getTime()){
+            throw new BussinesRuleException("code", "La fecha 1 debe ser mayor que la fecha 2", HttpStatus.BAD_REQUEST);
+        }else {
+            List<Venta> list = ventaRepository.findAllBetweenDates(fecha1, fecha2);
+            if (list.isEmpty()){
+                throw new NotFoundException("code", "No hay ventas registradas en esas fechas", HttpStatus.NO_CONTENT);
+            }else {
+                List<VentaDTO> dtoList = new ArrayList<>();
+                for (Venta v : list){
+                    VentaDTO vDTO = ventaDTOConvert.toDTO(v);
+                    List<DetalleVenta> dvList = dvRepository.findAllByVentaId(v.getId());
+                    for (DetalleVenta dvEntity : dvList){
+                        vDTO.addItem(dvDTOConvert.toDTO(dvEntity));
+                    }
+                    dtoList.add(vDTO);
+                }
+                return dtoList;
+            }
+        }
     }
 
     @Override
-    public List<PrendaUsdDTO> query17() {
-        return List.of();
+    public List<PrendaUsdDTO> query17() throws NotFoundException {
+        List<Prenda> list = (List<Prenda>) prendaRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay prendas registradas", HttpStatus.NO_CONTENT);
+        }else{
+            List<PrendaUsdDTO> dtoList = new ArrayList<>();
+            for (Prenda p : list){
+                dtoList.add(prendaDTOConvert.toUsdDTO(p));
+            }
+            return dtoList;
+        }
     }
 
     @Override
-    public List<ClienteDTO> query18() {
-        return List.of();
+    public List<ClienteDTO> query18() throws NotFoundException {
+        List<Cliente> list = (List<Cliente>) clienteRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay clientes registrados", HttpStatus.NO_CONTENT);
+        }else {
+            List<ClienteDTO> dtoList = new ArrayList<>();
+            for (Cliente c : list){
+                ClienteDTO cDTO = clienteDTOConvert.toDTO(c);
+                Integer compras = ventaRepository.countByClienteId(c.getId());
+                if (compras == null) compras = 0;
+                cDTO.setCompras(compras);
+                dtoList.add(cDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override
-    public List<OrdenDTO> query19() {
-        return List.of();
+    public List<OrdenDTO> query19() throws NotFoundException {
+        List<Orden> list = (List<Orden>) ordenRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay ordenes registradas", HttpStatus.NO_CONTENT);
+        }else {
+            List<OrdenDTO> dtoList = new ArrayList<>();
+            for (Orden o : list){
+                OrdenDTO oDTO = ordenDTOConvert.toDTO(o);
+                dtoList.add(oDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override
-    public List<CargoDTO> query20() {
-        return List.of();
+    public List<CargoDTO> query20(double sueldoBase) throws NotFoundException {
+        List<Cargo> list = cargoRepository.findBySueldoBaseGreaterThan(sueldoBase);
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay cargos con sueldo mayor al ingresado", HttpStatus.NO_CONTENT);
+        }else{
+            List<CargoDTO> dtoList = new ArrayList<>();
+            for (Cargo c : list){
+                CargoDTO cDTO = cargoDTOConvert.toDTO(c);
+                dtoList.add(cDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override
-    public List<ClientePaisDTO> query21() {
-        return List.of();
+    public List<ClientePaisDTO> query21() throws NotFoundException {
+        List<Cliente> list = (List<Cliente>) clienteRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay clientes registrados", HttpStatus.NO_CONTENT);
+        }else {
+            List<ClientePaisDTO> dtoList = new ArrayList<>();
+            for (Cliente c : list){
+                ClientePaisDTO cDTO = clienteDTOConvert.toPaisDTO(c);
+                dtoList.add(cDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override
-    public List<TipoProteccionDTO> query22() {
-        return List.of();
+    public List<TipoProteccionDTO> query22() throws NotFoundException {
+        List<TipoProteccion> list = (List<TipoProteccion>) tProteccionRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay tipos de proteccion registrados", HttpStatus.NO_CONTENT);
+        }else {
+            List<TipoProteccionDTO> dtoList = new ArrayList<>();
+            for (TipoProteccion tp : list){
+                TipoProteccionDTO tpDTO = tipoProteccionDTOConvert.toDTO(tp);
+                dtoList.add(tpDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override

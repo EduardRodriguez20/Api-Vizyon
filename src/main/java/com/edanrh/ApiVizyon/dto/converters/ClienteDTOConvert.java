@@ -20,10 +20,10 @@ public class ClienteDTOConvert {
         return dto;
     }
 
-    public ClientePaisDTO toPaisDTO(Cliente entity, String pais) {
+    public ClientePaisDTO toPaisDTO(Cliente entity) {
         ClientePaisDTO dto = modelMapper.map(entity, ClientePaisDTO.class);
         dto.setMunicipio(entity.getMunicipio().getNombre());
-        dto.setPais(pais);
+        dto.setPais(entity.getMunicipio().getDepartamento().getPais().getNombre());
         return dto;
     }
 

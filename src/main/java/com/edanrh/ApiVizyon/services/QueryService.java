@@ -1,6 +1,7 @@
 package com.edanrh.ApiVizyon.services;
 
 import com.edanrh.ApiVizyon.dto.*;
+import com.edanrh.ApiVizyon.exceptions.BussinesRuleException;
 import com.edanrh.ApiVizyon.exceptions.NotFoundException;
 
 import java.util.Date;
@@ -22,13 +23,13 @@ public interface QueryService {
     List<PrendaTotalUsdDTO> query13() throws NotFoundException;
     List<PrendaInsumosDTO> query14() throws NotFoundException;
     List<EmpleadoDTO> query15() throws NotFoundException;
-    List<VentaDTO> query16(Date fecha1, Date fecha2) throws NotFoundException;
-    List<PrendaUsdDTO> query17();
-    List<ClienteDTO> query18();
-    List<OrdenDTO> query19();
-    List<CargoDTO> query20();
-    List<ClientePaisDTO> query21();
-    List<TipoProteccionDTO> query22();
+    List<VentaDTO> query16(Date fecha1, Date fecha2) throws NotFoundException, BussinesRuleException;
+    List<PrendaUsdDTO> query17() throws NotFoundException;
+    List<ClienteDTO> query18() throws NotFoundException;
+    List<OrdenDTO> query19() throws NotFoundException;
+    List<CargoDTO> query20(double sueldoBase) throws NotFoundException;
+    List<ClientePaisDTO> query21() throws NotFoundException;
+    List<TipoProteccionDTO> query22() throws NotFoundException;
     List<EmpleadoDTO> query23();
     List<CargoCantidadDTO> query24();
     List<EstadoPrendaDTO> query25();
