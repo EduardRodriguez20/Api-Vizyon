@@ -323,8 +323,8 @@ public class QueryServiceImpl implements QueryService {
 
     @Override
     public List<VentaDTO> query16(Date fecha1, Date fecha2) throws NotFoundException, BussinesRuleException {
-        if (fecha1.getTime() < fecha2.getTime()){
-            throw new BussinesRuleException("code", "La fecha 1 debe ser mayor que la fecha 2", HttpStatus.BAD_REQUEST);
+        if (fecha2.getTime() < fecha1.getTime()){
+            throw new BussinesRuleException("code", "La fecha 2 debe ser mayor que la fecha 1", HttpStatus.BAD_REQUEST);
         }else {
             List<Venta> list = ventaRepository.findAllBetweenDates(fecha1, fecha2);
             if (list.isEmpty()){
@@ -609,6 +609,7 @@ public class QueryServiceImpl implements QueryService {
             List<PrendaTotalCopDTO> dtoList = new ArrayList<>();
             for (Prenda p : list){
                 Integer cantidad = detalleVentaRepository.findSumByProductoId(p.getId());
+                if (cantidad == null) cantidad = 0;
                 double total = cantidad * p.getValorUnitCop();
                 PrendaTotalCopDTO pDTO = prendaDTOConvert.toTotalCopDTO(p, total);
                 dtoList.add(pDTO);

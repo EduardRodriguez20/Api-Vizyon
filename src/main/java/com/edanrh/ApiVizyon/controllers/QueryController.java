@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -145,11 +147,18 @@ public class QueryController {
     }
 
     @GetMapping("/query16")
-    public ResponseEntity<?> query16(@RequestParam Date fecha1,@RequestParam Date fecha2) throws NotFoundException, BussinesRuleException {
-        Map<String,Object> response=new HashMap<>();
-        List<VentaDTO> list = queryService.query16(fecha1, fecha2);
-        response.put("Ventas", list);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<?> query16(@RequestParam String fecha1Str,@RequestParam String fecha2Str) throws NotFoundException, BussinesRuleException {
+        try{
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date fecha1 = dateFormat.parse(fecha1Str);
+            Date fecha2 = dateFormat.parse(fecha2Str);
+            Map<String,Object> response=new HashMap<>();
+            List<VentaDTO> list = queryService.query16(fecha1, fecha2);
+            response.put("Ventas", list);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (ParseException e){
+            throw new BussinesRuleException("code", "Formato de fechas incorrecto", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/query17")
