@@ -1,6 +1,7 @@
 package com.edanrh.ApiVizyon.controllers;
 
 import com.edanrh.ApiVizyon.dto.*;
+import com.edanrh.ApiVizyon.exceptions.BussinesRuleException;
 import com.edanrh.ApiVizyon.exceptions.NotFoundException;
 import com.edanrh.ApiVizyon.services.QueryService;
 import lombok.AllArgsConstructor;
@@ -144,7 +145,7 @@ public class QueryController {
     }
 
     @GetMapping("/query16")
-    public ResponseEntity<?> query16(@RequestParam Date fecha1,@RequestParam Date fecha2) throws NotFoundException {
+    public ResponseEntity<?> query16(@RequestParam Date fecha1,@RequestParam Date fecha2) throws NotFoundException, BussinesRuleException {
         Map<String,Object> response=new HashMap<>();
         List<VentaDTO> list = queryService.query16(fecha1, fecha2);
         response.put("Ventas", list);

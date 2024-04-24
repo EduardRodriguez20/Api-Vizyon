@@ -30,12 +30,12 @@ public interface QueryService {
     List<CargoDTO> query20(double sueldoBase) throws NotFoundException;
     List<ClientePaisDTO> query21() throws NotFoundException;
     List<TipoProteccionDTO> query22() throws NotFoundException;
-    List<EmpleadoDTO> query23();
-    List<CargoCantidadDTO> query24();
-    List<EstadoPrendaDTO> query25();
-    List<TipoPersonaDTO> query26();
-    List<TipoProteccionDTO> query27();
-    List<EstadoOrdenDTO> query28();
+    List<EmpleadoDTO> query23() throws NotFoundException;
+    List<CargoCantidadDTO> query24() throws NotFoundException;
+    List<EstadoPrendaDTO> query25() throws NotFoundException;
+    List<TipoPersonaDTO> query26() throws NotFoundException;
+    List<TipoProteccionDTO> query27() throws NotFoundException;
+    List<EstadoOrdenDTO> query28() throws NotFoundException;
     List<FormaPagoDTO> query29();
     List<InsumoPrendasDTO> query30();
     List<ClienteTotalDTO> query31();

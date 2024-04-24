@@ -10,4 +10,7 @@ public interface OrdenRepository extends CrudRepository<Orden, Long> {
 
     @Query("SELECT o FROM Orden o WHERE o.estado.descripcion = 'En proceso'")
     List<Orden> findAllInProceso();
+
+    @Query("SELECT COUNT(o.estado.id) FROM Orden o GROUP BY o.estado.id HAVING o.estado.id = ?1")
+    Integer countByEstadoId(Long estadoId);
 }

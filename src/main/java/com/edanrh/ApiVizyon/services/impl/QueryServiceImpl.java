@@ -26,6 +26,7 @@ public class QueryServiceImpl implements QueryService {
     private DetalleOrdenRepository detalleOrdenRepository;
     private EmpleadoRepository empleadoRepository;
     private EmpresaRepository empresaRepository;
+    private EstadoRepository estadoRepository;
     private InsumoRepository insumoRepository;
     private InsumoPrendaRepository insumoPrendaRepository;
     private InsumoProveedorRepository ipRepository;
@@ -37,11 +38,13 @@ public class QueryServiceImpl implements QueryService {
     private ProveedorRepository proveedorRepository;
     private DetalleVentaRepository dvRepository;
     private DetalleOrdenRepository doRepository;
+    private TipoPersonaRepository tPersonaRepository;
     private TipoProteccionRepository tProteccionRepository;
     private CargoDTOConvert cargoDTOConvert;
     private ClienteDTOConvert clienteDTOConvert;
     private EmpleadoDTOConvert empleadoDTOConvert;
     private EmpresaDTOConvert empresaDTOConvert;
+    private EstadoDTOConvert estadoDTOConvert;
     private InventarioDTOConvert inventarioDTOConvert;
     private VentaDTOConvert ventaDTOConvert;
     private OrdenDTOConvert ordenDTOConvert;
@@ -50,6 +53,8 @@ public class QueryServiceImpl implements QueryService {
     private InsumoDTOConvert insumoDTOConvert;
     private DetalleVentaDTOConvert dvDTOConvert;
     private DetalleOrdenDTOConvert doDTOConvert;
+    private TipoPersonaDTOConvert tPersonaDTOConvert;
+    private TipoProteccionDTOConvert tProteccionDTOConvert;
 
     @Override
     public List<VentaDTO> query1(String mes, String year) throws NotFoundException {
@@ -425,7 +430,9 @@ public class QueryServiceImpl implements QueryService {
         }else {
             List<TipoProteccionDTO> dtoList = new ArrayList<>();
             for (TipoProteccion tp : list){
-                TipoProteccionDTO tpDTO = tipoProteccionDTOConvert.toDTO(tp);
+                Integer cantidad = prendaRepository.countByTipoProteccionId(tp.getId());
+                if (cantidad == null) cantidad = 0;
+                TipoProteccionDTO tpDTO = tProteccionDTOConvert.toDTO(tp, cantidad);
                 dtoList.add(tpDTO);
             }
             return dtoList;
@@ -433,33 +440,106 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
-    public List<EmpleadoDTO> query23() {
-        return List.of();
+    public List<EmpleadoDTO> query23() throws NotFoundException {
+        List<Empleado> list = empleadoRepository.findByOrderByFechaIngresoDesc();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay empleados registrados", HttpStatus.NO_CONTENT);
+        }else {
+            List<EmpleadoDTO> dtoList = new ArrayList<>();
+            for (Empleado e : list){
+                EmpleadoDTO eDTO = empleadoDTOConvert.toDTO(e);
+                dtoList.add(eDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override
-    public List<CargoCantidadDTO> query24() {
-        return List.of();
+    public List<CargoCantidadDTO> query24() throws NotFoundException {
+        List<Cargo> list = (List<Cargo>) cargoRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay cargos registrados", HttpStatus.NO_CONTENT);
+        }else {
+            List<CargoCantidadDTO> dtoList = new ArrayList<>();
+            for (Cargo c : list){
+                Integer cantidad = empleadoRepository.countByCargoId(c.getId());
+                if (cantidad == null) cantidad = 0;
+                CargoCantidadDTO cDTO = cargoDTOConvert.toCantidadDTO(c, cantidad);
+                dtoList.add(cDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override
-    public List<EstadoPrendaDTO> query25() {
-        return List.of();
+    public List<EstadoPrendaDTO> query25() throws NotFoundException {
+        List<Estado> list = (List<Estado>) estadoRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay estados registrados", HttpStatus.NO_CONTENT);
+        }else {
+            List<EstadoPrendaDTO> dtoList = new ArrayList<>();
+            for (Estado e : list){
+                Integer cantidad = prendaRepository.countByEstadoId(e.getId());
+                if (cantidad == null) cantidad = 0;
+                EstadoPrendaDTO eDTO = estadoDTOConvert.toPrendaDTO(e, cantidad);
+                dtoList.add(eDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override
-    public List<TipoPersonaDTO> query26() {
-        return List.of();
+    public List<TipoPersonaDTO> query26() throws NotFoundException {
+        List<TipoPersona> list = (List<TipoPersona>) tPersonaRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay tipos de persona registrados", HttpStatus.NO_CONTENT);
+        }else {
+            List<TipoPersonaDTO> dtoList = new ArrayList<>();
+            for (TipoPersona tp : list){
+                Integer cantidadCliente = clienteRepository.countByTipoPersonaId(tp.getId());
+                if (cantidadCliente == null) cantidadCliente = 0;
+                Integer cantidadProveedor = proveedorRepository.countByTipoPersonaId(tp.getId());
+                if (cantidadProveedor == null) cantidadProveedor = 0;
+                int cantidad = cantidadCliente + cantidadProveedor;
+                TipoPersonaDTO tpDTO = tPersonaDTOConvert.toDTO(tp, cantidad);
+                dtoList.add(tpDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override
-    public List<TipoProteccionDTO> query27() {
-        return List.of();
+    public List<TipoProteccionDTO> query27() throws NotFoundException {
+        List<TipoProteccion> list = (List<TipoProteccion>) tProteccionRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay tipos de proteccion registrados", HttpStatus.NO_CONTENT);
+        }else {
+            List<TipoProteccionDTO> dtoList = new ArrayList<>();
+            for (TipoProteccion tp : list){
+                Integer cantidad = prendaRepository.countByTipoProteccionId(tp.getId());
+                if (cantidad == null) cantidad = 0;
+                TipoProteccionDTO tpDTO = tProteccionDTOConvert.toDTO(tp, cantidad);
+                dtoList.add(tpDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override
-    public List<EstadoOrdenDTO> query28() {
-        return List.of();
+    public List<EstadoOrdenDTO> query28() throws NotFoundException {
+        List<Estado> list = (List<Estado>) estadoRepository.findAll();
+        if (list.isEmpty()){
+            throw new NotFoundException("code", "No hay estados registrados", HttpStatus.NO_CONTENT);
+        }else {
+            List<EstadoOrdenDTO> dtoList = new ArrayList<>();
+            for (Estado e : list){
+                Integer cantidad = ordenRepository.countByEstadoId(e.getId());
+                if (cantidad == null) cantidad = 0;
+                EstadoOrdenDTO eDTO = estadoDTOConvert.toOrdenDTO(e, cantidad);
+                dtoList.add(eDTO);
+            }
+            return dtoList;
+        }
     }
 
     @Override

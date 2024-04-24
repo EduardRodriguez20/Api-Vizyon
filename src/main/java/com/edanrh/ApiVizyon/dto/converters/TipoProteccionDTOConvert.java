@@ -12,8 +12,9 @@ public class TipoProteccionDTOConvert {
 
     private ModelMapper modelMapper;
 
-    public TipoProteccionDTO toDTO(TipoProteccion tipoProteccion) {
+    public TipoProteccionDTO toDTO(TipoProteccion tipoProteccion, int cantidad) {
         TipoProteccionDTO dto = modelMapper.map(tipoProteccion, TipoProteccionDTO.class);
+        dto.setCantidadPrendas(cantidad);
         return dto;
     }
 }
