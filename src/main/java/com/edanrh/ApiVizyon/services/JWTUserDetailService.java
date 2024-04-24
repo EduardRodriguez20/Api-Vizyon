@@ -24,7 +24,6 @@ public class JWTUserDetailService implements UserDetailsService {
         return this.repositoryUser.findByEmail(username)
                 .map(user -> {
                     final var authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
-                    System.out.println(authorities);
                     return new User(user.getEmail(), user.getPassword(), authorities);
                 }).orElseThrow(() -> new UsernameNotFoundException("User not exist"));
     }

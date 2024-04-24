@@ -59,7 +59,6 @@ public class JWTService {
                 .findFirst()
                 .map(GrantedAuthority::getAuthority)
                 .orElseThrow(() -> new IllegalArgumentException("User has no roles"));
-        System.out.println(role);
         final Map<String, Object> claims = Collections.singletonMap("ROLE", role);
         return this.getToken(claims, userDetails.getUsername());
     }
